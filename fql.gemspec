@@ -9,9 +9,9 @@ Gem::Specification.new do |s|
   s.version     = Fql::VERSION
   s.authors     = ["Maarten Claes"]
   s.email       = ["maartencls@gmail.com"]
-  s.homepage    = "TODO"
-  s.summary     = "TODO: Summary of Fql."
-  s.description = "TODO: Description of Fql."
+  s.homepage    = "https://github.com/maartencls/rails-fql"
+  s.summary     = "Facebook Query Language"
+  s.description = "Allows you to easily use FQL in your Rails app."
 
   s.files = Dir["{app,config,db,lib}/**/*"] + ["MIT-LICENSE", "Rakefile", "README.rdoc"]
   s.test_files = Dir["test/**/*"]
