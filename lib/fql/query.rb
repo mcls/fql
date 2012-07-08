@@ -3,7 +3,11 @@ module Fql
     
     protected
     def initialize(multi_query)
-      @multi_query = multi_query
+      if multi_query.is_a?(Hash)
+        @multi_query = multi_query
+      else
+        @multi_query = { q: multi_query } 
+      end
     end
 
     public

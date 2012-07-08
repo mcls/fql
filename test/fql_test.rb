@@ -17,11 +17,12 @@ class FqlTest < ActiveSupport::TestCase
   test "creates valid uri for fql query" do
     multi_query = {
       all_friends:  "SELECT uid2 FROM friend WHERE uid1=me()",
-      my_name:      "SELECT name FROM user WHERE uid=me()" }
+      my_name:      "SELECT name FROM user WHERE uid=me()" 
+    }
     query = Fql::Query.create multi_query
 
-    actual = Fql.make_url(query).request_uri
-    expected =  "/fql?q="+ 
+    actual    = Fql.make_url(query).request_uri
+    expected  = "/fql?q="+ 
                 "%7B'all_friends':" + 
                 "'SELECT%20uid2%20FROM%20friend%20WHERE%20uid1=me()'," + 
                 "'my_name':'SELECT%20name%20FROM%20user%20WHERE%20uid=me()'%7D"
@@ -29,10 +30,15 @@ class FqlTest < ActiveSupport::TestCase
     assert_equal expected, actual
   end
 
+  test "can create single query without using hash" do
+    assert_nothing_raised do
+      query = Fql::Query.create "SELECT uid2 FROM friend WHERE uid1=me()"
+      query.compose
+    end
+  end
+
   test "should correctly parse json response when using single query" do
-    query = { 
-      all_friends: "SELECT uid2 FROM friend WHERE uid1=me()" 
-    }
+    query = "SELECT uid2 FROM friend WHERE uid1=me()" 
     mocked_response = '{"data":[{"uid2":"1"},{"uid2": "2"}]}'
 
     assert_executes_query_correctly(query, mocked_response)
@@ -52,17 +58,17 @@ class FqlTest < ActiveSupport::TestCase
 
   test "raise a Fql::Exception when something goes wrong" do
     facebook_should_respond_with EXCEPTIONS[:oauth]
-    query = Fql::Query.create({query: 'SELECT uid2 FROM friend WHERE uid1=me()'})
 
     assert_raise Fql::Exception do
-      Fql.execute(query)
+      q = Fql::Query.create({q: 'SELECT uid2 FROM friend WHERE uid1=me()'})
+      Fql.execute(q)
     end
   end
 
   def assert_executes_query_correctly(query, mocked_json_response)
     facebook_should_respond_with mocked_json_response
-    actual = Fql.execute(Fql::Query.create(query))
-    expected = ActiveSupport::JSON.decode(mocked_json_response)["data"]
+    actual    = Fql.execute(Fql::Query.create(query))
+    expected  = ActiveSupport::JSON.decode(mocked_json_response)["data"]
     assert_equal expected, actual
   end
 
