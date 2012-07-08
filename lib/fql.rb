@@ -1,5 +1,6 @@
 require "net/http"
 require "fql/query"
+require "fql/exception"
 
 module Fql
   BASE_URL = 'https://graph.facebook.com/fql?q='
@@ -31,7 +32,11 @@ module Fql
   def self.decode_response(response)
     json = ActiveSupport::JSON
     decoded_json = json.decode response.body
-    decoded_json["data"]
+    result = decoded_json["data"]
+    if !result
+      raise Fql::Exception.new(decoded_json)
+    end
+    result
   end
 
 end
