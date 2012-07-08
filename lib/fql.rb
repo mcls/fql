@@ -1,4 +1,5 @@
 require "net/http"
+require "fql/query"
 
 module Fql
   BASE_URL = 'https://graph.facebook.com/fql?q='
