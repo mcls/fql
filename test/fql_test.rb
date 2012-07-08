@@ -14,8 +14,7 @@ class FqlTest < ActiveSupport::TestCase
   }
 
 
-
-  test "creates valid uri from fql" do
+  test "creates valid uri for fql query" do
     multi_query = {
       all_friends:  "SELECT uid2 FROM friend WHERE uid1=me()",
       my_name:      "SELECT name FROM user WHERE uid=me()" }
@@ -30,51 +29,42 @@ class FqlTest < ActiveSupport::TestCase
     assert_equal expected, actual
   end
 
-  test "execute should parse array inside 'data' key of json response " + 
-       "when using single query" do
-    # Mock web request
-    json = '{"data":[{"uid2":"1"},{"uid2": "2"}]}'
-    facebook_should_respond_with json
+  test "should correctly parse json response when using single query" do
+    query = { 
+      all_friends: "SELECT uid2 FROM friend WHERE uid1=me()" 
+    }
+    mocked_response = '{"data":[{"uid2":"1"},{"uid2": "2"}]}'
 
-    # Create query
-    query = Fql::Query.create({ 
-      all_friends:  "SELECT uid2 FROM friend WHERE uid1=me()" })
-
-    actual = Fql.execute(query)
-    expected = ActiveSupport::JSON.decode(json)["data"]
-
-    assert_equal expected, actual 
+    assert_executes_query_correctly(query, mocked_response)
   end
 
-  test "execute should parse array inside 'data' key of json response " +
-       "when using multiple queries" do
-    # Mock web request
-    json =  '{"data":[{"name":"all_friends","fql_result_set":[' + 
-            '{"uid2":"509346931"},{"uid2":"511025194"},{"uid2":"524396353"}]}' +
-            ',{"name":"my_name","fql_result_set":[{"name":"Maarten Claes"}]}]}'
-    facebook_should_respond_with json
-    
-    # Create query
-    query = Fql::Query.create({ 
+  test "should correctly parse json response when using multiple queries" do
+    multi_query = { 
       all_friends:  "SELECT uid2 FROM friend WHERE uid1=me()",
-      my_name:      "SELECT name FROM user WHERE uid=me()" })
-    
-    actual = Fql.execute(query)
-    expected = ActiveSupport::JSON.decode(json)["data"]
-
-    assert_equal expected, actual
-    assert_equal expected.size, 2
+      my_name:      "SELECT name FROM user WHERE uid=me()" 
+    }
+    mocked_response = '{"data":['+ 
+      '{"name":"all_friends","fql_result_set":[{"uid2":"1"},{"uid2":"2"}]},' + 
+      '{"name":"my_name","fql_result_set":[{"name":"Some user"}]}]}'
+  
+    assert_executes_query_correctly(multi_query, mocked_response)
   end
 
   test "raise a Fql::Exception when something goes wrong" do
     facebook_should_respond_with EXCEPTIONS[:oauth]
-
     query = Fql::Query.create({query: 'SELECT uid2 FROM friend WHERE uid1=me()'})
+
     assert_raise Fql::Exception do
       Fql.execute(query)
     end
   end
 
+  def assert_executes_query_correctly(query, mocked_json_response)
+    facebook_should_respond_with mocked_json_response
+    actual = Fql.execute(Fql::Query.create(query))
+    expected = ActiveSupport::JSON.decode(mocked_json_response)["data"]
+    assert_equal expected, actual
+  end
 
   def facebook_should_respond_with(body, method = :any)
     FakeWeb.register_uri(method, %r|graph\.facebook\.com|, :body => body)
