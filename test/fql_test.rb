@@ -19,7 +19,7 @@ class FqlTest < ActiveSupport::TestCase
       all_friends:  "SELECT uid2 FROM friend WHERE uid1=me()",
       my_name:      "SELECT name FROM user WHERE uid=me()" 
     }
-    query = Fql::Query.create multi_query
+    query = Fql::Query.new multi_query
 
     actual    = Fql.make_url(query).request_uri
     expected  = "/fql?q="+ 
@@ -32,7 +32,7 @@ class FqlTest < ActiveSupport::TestCase
 
   test "can create single query without using hash" do
     assert_nothing_raised do
-      query = Fql::Query.create "SELECT uid2 FROM friend WHERE uid1=me()"
+      query = Fql::Query.new "SELECT uid2 FROM friend WHERE uid1=me()"
       query.compose
     end
   end
@@ -60,14 +60,14 @@ class FqlTest < ActiveSupport::TestCase
     facebook_should_respond_with EXCEPTIONS[:oauth]
 
     assert_raise Fql::Exception do
-      q = Fql::Query.create({q: 'SELECT uid2 FROM friend WHERE uid1=me()'})
+      q = Fql::Query.new 'SELECT uid2 FROM friend WHERE uid1=me()'
       Fql.execute(q)
     end
   end
 
   def assert_executes_query_correctly(query, mocked_json_response)
     facebook_should_respond_with mocked_json_response
-    actual    = Fql.execute(Fql::Query.create(query))
+    actual    = Fql.execute(Fql::Query.new(query))
     expected  = ActiveSupport::JSON.decode(mocked_json_response)["data"]
     assert_equal expected, actual
   end
