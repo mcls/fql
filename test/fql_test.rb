@@ -30,13 +30,6 @@ class FqlTest < ActiveSupport::TestCase
     assert_equal expected, actual
   end
 
-  test "can create single query without using hash" do
-    assert_nothing_raised do
-      query = Fql::Query.new "SELECT uid2 FROM friend WHERE uid1=me()"
-      query.compose
-    end
-  end
-
   test "should correctly parse json response when using single query" do
     query = "SELECT uid2 FROM friend WHERE uid1=me()" 
     mocked_response = '{"data":[{"uid2":"1"},{"uid2": "2"}]}'
