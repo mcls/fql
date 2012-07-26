@@ -4,8 +4,10 @@ module Fql
     def initialize(multi_query)
       if multi_query.is_a?(Hash)
         @multi_query = multi_query
-      else
+      elsif multi_query.is_a?(String)
         @multi_query = { q: multi_query } 
+      else
+        raise "Invalid Query format: has to be a String or a Hash"
       end
     end
 

@@ -19,9 +19,9 @@ class FqlTest < ActiveSupport::TestCase
       all_friends:  "SELECT uid2 FROM friend WHERE uid1=me()",
       my_name:      "SELECT name FROM user WHERE uid=me()" 
     }
-    query = Fql::Query.new multi_query
+    fql_query = Fql::Query.new multi_query
 
-    actual    = Fql.make_url(query).request_uri
+    actual    = Fql.make_url(fql_query).request_uri
     expected  = "/fql?q="+ 
                 "%7B'all_friends':" + 
                 "'SELECT%20uid2%20FROM%20friend%20WHERE%20uid1=me()'," + 
@@ -53,14 +53,13 @@ class FqlTest < ActiveSupport::TestCase
     facebook_should_respond_with EXCEPTIONS[:oauth]
 
     assert_raise Fql::Exception do
-      q = Fql::Query.new 'SELECT uid2 FROM friend WHERE uid1=me()'
-      Fql.execute(q)
+      Fql.execute('SELECT uid2 FROM friend WHERE uid1=me()')
     end
   end
 
   def assert_executes_query_correctly(query, mocked_json_response)
     facebook_should_respond_with mocked_json_response
-    actual    = Fql.execute(Fql::Query.new(query))
+    actual    = Fql.execute(query)
     expected  = ActiveSupport::JSON.decode(mocked_json_response)["data"]
     assert_equal expected, actual
   end

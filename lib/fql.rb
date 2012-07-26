@@ -5,15 +5,15 @@ require "fql/exception"
 module Fql
   BASE_URL = 'https://graph.facebook.com/fql?q='
 
-  def self.execute(fql_query, options = {})
-    query = Fql::Query.new fql_query
-    url = make_url(query, options)
+  def self.execute(query, options = {})
+    fql_query = Fql::Query.new query
+    url = make_url(fql_query, options)
     response = make_request url 
     self.decode_response response
   end
 
-  def self.make_url(query, options = {})
-    url = self::BASE_URL + URI.encode(query.compose)
+  def self.make_url(fql_query, options = {})
+    url = self::BASE_URL + URI.encode(fql_query.compose)
     if options.has_key?(:access_token)
       url += "&access_token=#{options[:access_token]}"
     end
