@@ -8,3 +8,8 @@ test/dummy/.sass-cache
 
 *.swp
 *.swo
+
+*.gem
+.bundle
+pkg
+Gemfile.lock
