@@ -2,6 +2,22 @@
 
 Easily execute FQL queries with this gem.
 
+## Download and installation
+
+The latest version of fql can be installed with RubyGems:
+
+```bash
+$ gem install fql
+```
+    
+If you're using Bundler, you can add it to your `Gemfile`:
+
+```ruby
+gem 'fql'
+```
+    
+## Examples
+
 *Exampe: a single query without access_token*
 
 ```ruby
