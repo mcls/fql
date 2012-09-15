@@ -10,10 +10,10 @@ Gem::Specification.new do |s|
   s.authors     = ["Maarten Claes"]
   s.email       = ["maartencls@gmail.com"]
   s.homepage    = "https://github.com/mcls/fql"
-  s.summary     = "Facebook Query Language"
+  s.summary     = "Facebook Query Language library"
   s.description = "Allows you to easily use FQL in Ruby."
 
-  s.files = Dir["{app,config,db,lib}/**/*"] + ["MIT-LICENSE", "Rakefile", "README.rdoc"]
+  s.files = Dir["lib/**/*"] + ["MIT-LICENSE", "Rakefile", "README.markdown"]
   s.test_files = Dir["test/**/*"]
 
   s.add_dependency "multi_json"
