@@ -22,6 +22,7 @@ gem 'fql'
 
 ```ruby
   Fql.execute('SELECT first_name, last_name FROM user WHERE uid = 4')
+  # => [{"name"=>"q", "fql_result_set"=>[{"first_name"=>"Mark", "last_name"=>"Zuckerberg"}]}] 
 ```
 
 *Exampe: a multi query with an access_token*
