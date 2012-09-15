@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
   s.version     = Fql::VERSION
   s.authors     = ["Maarten Claes"]
   s.email       = ["maartencls@gmail.com"]
-  s.homepage    = "https://github.com/maartencls/rails-fql"
+  s.homepage    = "https://github.com/mcls/fql"
   s.summary     = "Facebook Query Language"
   s.description = "Allows you to easily use FQL in Ruby."
 
