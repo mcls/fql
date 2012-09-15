@@ -1,19 +1,21 @@
 module Fql
   class Query
-    
-    def initialize(multi_query)
-      if multi_query.is_a?(Hash)
-        @multi_query = multi_query
-      elsif multi_query.is_a?(String)
-        @multi_query = { q: multi_query } 
+
+    def initialize(queries)
+      if queries.is_a?(Hash)
+        @queries = queries
+      elsif queries.is_a?(String)
+        @queries = { q: queries }
       else
         raise "Invalid Query format: has to be a String or a Hash"
       end
     end
 
+    # Returns the query as a String which has been properly formatted and can be
+    # sent to Facebook.
     def compose
       final_query = '{'
-      @multi_query.each do |key, query|
+      @queries.each do |key, query|
         final_query += "'" + key.to_s + "':'" + query + "',"
       end
       final_query[0...-1] + '}' # Remove last ',' and add closing '}'

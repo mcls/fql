@@ -13,3 +13,5 @@ test/dummy/.sass-cache
 .bundle
 pkg
 Gemfile.lock
+
+doc/
