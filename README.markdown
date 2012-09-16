@@ -34,6 +34,11 @@ gem 'fql'
     "query2" => "SELECT name FROM user WHERE uid IN (SELECT uid FROM #query1)"
   }, options)
   # => [{"name"=>"query1", "fql_result_set"=>[{"uid"=>712638919, "rsvp_status"=>"attending"}, {"uid"=>711903876, "rsvp_status"=>"attending"}, {"uid"=>711447283, "rsvp_status"=>"attending"}]}, {"name"=>"query2", "fql_result_set"=>[{"name"=>"Srikanth Nagandla"}, {"name"=>"Hinling Yeung"}, {"name"=>"G\u00F6khan Olgun"}]}]
+  # Or the same result but formatted:
+  # [
+  #   {"name"=>"query1", "fql_result_set"=>[{"uid"=>712638919, "rsvp_status"=>"attending"}, {"uid"=>711903876, "rsvp_status"=>"attending"}, {"uid"=>711447283, "rsvp_status"=>"attending"}]}, 
+  #   {"name"=>"query2", "fql_result_set"=>[{"name"=>"Srikanth Nagandla"}, {"name"=>"Hinling Yeung"}, {"name"=>"G\u00F6khan Olgun"}]}
+  # ]
 ```
 
 ---
