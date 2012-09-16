@@ -14,11 +14,26 @@ module Fql
     # Returns the query as a String which has been properly formatted and can be
     # sent to Facebook.
     def compose
-      final_query = '{'
-      @queries.each do |key, query|
-        final_query += "'" + key.to_s + "':'" + query + "',"
+      if @queries.length > 1
+        compose_multi_query
+      else
+        compose_single_query
       end
-      final_query[0...-1] + '}' # Remove last ',' and add closing '}'
+    end
+
+    protected
+
+    def compose_multi_query
+      q = ''
+      @queries.each do |key, query|
+        q += "'#{key}':'#{query}',"
+      end
+      # Remove last ',' and add enclosing braces
+      '{' + q[0...-1] + '}'
+    end
+
+    def compose_single_query
+      @queries[:q]
     end
 
   end
