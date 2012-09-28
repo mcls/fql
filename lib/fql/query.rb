@@ -33,7 +33,7 @@ module Fql
     end
 
     def compose_single_query
-      @queries[:q]
+      @queries[@queries.keys[0]]
     end
 
   end
