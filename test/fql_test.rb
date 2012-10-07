@@ -57,6 +57,16 @@ class FqlTest < ActiveSupport::TestCase
     end
   end
 
+  test "should add access_token as GET param to url if provided" do
+    query = Fql::Query.new('')
+
+    uri = Fql.make_url(query, access_token: 'token')
+    assert(uri.request_uri.include?("&access_token=token"))
+
+    uri = Fql.make_url(query)
+    assert(!uri.request_uri.include?("access_token"))
+  end
+
   def assert_executes_query_correctly(query, mocked_json_response)
     facebook_should_respond_with mocked_json_response
     actual    = Fql.execute(query)

@@ -30,12 +30,12 @@ module Fql
     end
 
     # Constructs the Facebook url which will return the results from the FQL
-    # query. The FQL query and access_token are passed as GET parameters.
+    # query. The FQL query and optional access_token are passed as GET
+    # parameters.
+    #
     def make_url(fql_query, options = {})
       url = self::BASE_URL + URI.encode(fql_query.compose)
-      if options.has_key?(:access_token)
-        url += "&access_token=#{options[:access_token]}"
-      end
+      url += "&access_token=#{options[:access_token]}" if options && options[:access_token]
       URI.parse url
     end
 
