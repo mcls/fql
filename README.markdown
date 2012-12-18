@@ -1,5 +1,7 @@
 # Fql
 
+[![Code Climate](https://codeclimate.com/badge.png)](https://codeclimate.com/github/mcls/fql)  
+
 Easily execute FQL queries with this gem.
 
 ## Download and installation
