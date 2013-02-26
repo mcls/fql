@@ -26,7 +26,7 @@ module Fql
     def compose_multi_query
       q = ''
       @queries.each do |key, query|
-        q += "'#{key}':'#{query}',"
+        q += "'#{key}':'#{query.gsub(/(\r\n|\r|\n)/m, '')}',"
       end
       # Remove last ',' and add enclosing braces
       '{' + q[0...-1] + '}'

@@ -27,6 +27,24 @@ class FqlQueryTest < ActiveSupport::TestCase
     assert_equal expected, actual
   end
 
+  test 'multiquery gets composed properly even if query is multiline' do
+    multi_query = {
+      all_friends:  "SELECT uid2 FROM friend 
+WHERE uid1=me()",
+      my_name:      "SELECT name FROM user\r\n WHERE uid=me()"
+    }
+    query = Fql::Query.new multi_query
+
+    actual = query.compose
+    expected =  "{" +
+      "'all_friends':'SELECT uid2 FROM friend WHERE uid1=me()'," +
+      "'my_name':'SELECT name FROM user WHERE uid=me()'" +
+    "}"
+
+    assert_equal expected, actual
+  end
+
+
   test 'single query gets composed properly' do
     query = Fql::Query.new "SELECT name FROM user WHERE uid=me()"
     actual   = query.compose
