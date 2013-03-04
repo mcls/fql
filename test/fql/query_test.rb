@@ -51,4 +51,12 @@ WHERE uid1=me()",
     expected = "SELECT name FROM user WHERE uid=me()"
     assert_equal expected, actual
   end
+
+  test 'single query gets composed properly even if it is multiline' do
+    query = Fql::Query.new "SELECT name FROM \r\nuser WHERE\r\n uid=me()"
+    actual   = query.compose
+    expected = "SELECT name FROM user WHERE uid=me()"
+    assert_equal expected, actual
+  end
+
 end
