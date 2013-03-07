@@ -23,17 +23,21 @@ module Fql
 
     protected
 
+    def escape_query(query)
+      query.gsub(/(\r\n|\r|\n)/m, '')
+    end
+
     def compose_multi_query
       q = ''
       @queries.each do |key, query|
-        q += "'#{key}':'#{query.gsub(/(\r\n|\r|\n)/m, '')}',"
+        q += "'#{key}':'#{escape_query query}',"
       end
       # Remove last ',' and add enclosing braces
       '{' + q[0...-1] + '}'
     end
 
     def compose_single_query
-      @queries[@queries.keys[0]]
+      escape_query @queries[@queries.keys[0]]
     end
 
   end
