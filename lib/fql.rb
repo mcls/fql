@@ -29,6 +29,72 @@ module Fql
       self.decode_response response
     end
 
+
+    # The wrapper of execute method, to get all records using pagination
+    # Pagination uses timestamp columns (relies on ORDER BY time DESC)
+    # and set WHERE clause to get next portion of data
+    #
+    # Works only with descendence ordering
+    #
+    # Supports both of single and multiple queries
+    #
+    # Query should contain two placeholders: where and limit.
+    # Paginate method will use them to modificate FQL query
+    #
+    # Accepted options the same, as .execute method plus:
+    #   time_column: The name of column with timestamp. Default is 'time'
+    #   primary_key: The name of primary key (ID) column. Default is 'id'
+    #   rpp: Results per page. Default is 50. Should be lesser than Facebook limitations (different for each table). Defauls is 50
+    #   until: You can set the start time for pagination. All older records will be retrived
+    #
+    # Example:
+    #
+    #   Fql.paginate('SELECT post_id, message FROM stream WHERE source_id = 1234567 %{where} ORDER BY updated_time DESC LIMIT %{limit}', {
+    #       time_column: 'updated_time',
+    #       primary_key: 'post_id',
+    #       rpp: 30
+    #   }) do |result|
+    #       #process the result here
+    #   end
+    #
+    def paginate(query, options = {})
+      query = { q: query } if query.is_a? String
+
+      time_column = options[:time_column] || 'time'
+      primary_key = options[:primary_key] || 'id'
+      limit = options[:rpp] || 50 # Make limit chunk
+
+      begin
+        #Make where chunk
+        where = ''
+        where << " and #{time_column} <= #{options[:until].to_i}" unless options[:until].blank?
+        (options[:last_ids] || []).each do |v|
+          where << " and #{primary_key} != '#{v}'"
+        end
+
+        #Set where and limit chunks into query
+        pquery = {}
+        query.each { |k,v| pquery[k] = v % {where: where, limit: limit} }
+
+        #Make query
+        results = self.execute(pquery, options)
+
+        #Usually you need to paginate first query
+        set = query.size > 1 ? results.first['fql_result_set'] : results
+
+        unless set.blank?
+          last_timestamp = set.last[time_column]
+          options[:until] = last_timestamp
+          #Exclude all IDs with the same timestamp from next portion of data
+          ids = set.select { |v| v[time_column] == last_timestamp }.map{ |v| v[primary_key] }
+
+          options[:last_ids] = ids
+
+          yield results
+        end
+      end until set.blank?
+    end
+
     # Constructs the Facebook url which will return the results from the FQL
     # query. The FQL query and optional access_token are passed as GET
     # parameters.
