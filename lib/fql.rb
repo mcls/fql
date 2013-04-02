@@ -35,7 +35,7 @@ module Fql
     #
     def make_url(fql_query, options = {})
       url = self::BASE_URL + URI.encode(fql_query.compose)
-      url += "&access_token=#{options[:access_token]}" if options && options[:access_token]
+      url += URI.encode("&access_token=#{options[:access_token]}") if options && options[:access_token]
       URI.parse url
     end
 
