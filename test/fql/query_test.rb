@@ -20,8 +20,8 @@ class FqlQueryTest < ActiveSupport::TestCase
 
     actual = query.compose
     expected =  "{" +
-      "'all_friends':'SELECT uid2 FROM friend WHERE uid1=me()'," +
-      "'my_name':'SELECT name FROM user WHERE uid=me()'" +
+      "\"all_friends\":\"SELECT uid2 FROM friend WHERE uid1=me()\"," +
+      "\"my_name\":\"SELECT name FROM user WHERE uid=me()\"" +
     "}"
 
     assert_equal expected, actual
@@ -37,8 +37,8 @@ WHERE uid1=me()",
 
     actual = query.compose
     expected =  "{" +
-      "'all_friends':'SELECT uid2 FROM friend WHERE uid1=me()'," +
-      "'my_name':'SELECT name FROM user WHERE uid=me()'" +
+      "\"all_friends\":\"SELECT uid2 FROM friend WHERE uid1=me()\"," +
+      "\"my_name\":\"SELECT name FROM user WHERE uid=me()\"" +
     "}"
 
     assert_equal expected, actual

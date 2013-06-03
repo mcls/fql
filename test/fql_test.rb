@@ -23,9 +23,9 @@ class FqlTest < ActiveSupport::TestCase
 
     actual    = Fql.make_url(fql_query).request_uri
     expected  = "/fql?q="+ 
-                "%7B'all_friends':" + 
-                "'SELECT%20uid2%20FROM%20friend%20WHERE%20uid1=me()'," + 
-                "'my_name':'SELECT%20name%20FROM%20user%20WHERE%20uid=me()'%7D"
+                "%7B%22all_friends%22:" + 
+                "%22SELECT%20uid2%20FROM%20friend%20WHERE%20uid1=me()%22," + 
+                "%22my_name%22:%22SELECT%20name%20FROM%20user%20WHERE%20uid=me()%22%7D"
 
     assert_equal expected, actual
   end
