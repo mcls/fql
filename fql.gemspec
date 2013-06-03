@@ -27,6 +27,7 @@ Gem::Specification.new do |s|
   s.add_development_dependency "rails", "~> 3.2.6"
   s.add_development_dependency "sqlite3", ">= 1.3.6"
   s.add_development_dependency "fakeweb", "~> 1.3.0"
+  s.add_development_dependency "vcr"
   s.add_development_dependency "rb-fsevent"
   s.add_development_dependency "guard-test"
 end
