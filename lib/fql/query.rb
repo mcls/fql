@@ -23,10 +23,6 @@ module Fql
 
     protected
 
-    def escape_query(query)
-      query.gsub(/(\r\n|\r|\n)/m, '')
-    end
-
     def compose_multi_query
       q = ''
       @queries.each do |key, query|
@@ -40,5 +36,8 @@ module Fql
       escape_query @queries[@queries.keys[0]]
     end
 
+    def escape_query(query)
+      query.gsub(/(\r\n|\r|\n)/m, '')
+    end
   end
 end
