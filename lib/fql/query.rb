@@ -30,7 +30,7 @@ module Fql
     def compose_multi_query
       q = ''
       @queries.each do |key, query|
-        q += "'#{key}':'#{escape_query query}',"
+        q += %Q("#{key}":"#{escape_query query}",)
       end
       # Remove last ',' and add enclosing braces
       '{' + q[0...-1] + '}'
