@@ -1,9 +1,7 @@
+# coding: utf-8
 $:.push File.expand_path("../lib", __FILE__)
-
-# Maintain your gem's version:
 require "fql/version"
 
-# Describe your gem and declare its dependencies:
 Gem::Specification.new do |s|
   s.name        = "fql"
   s.version     = Fql::VERSION
@@ -20,11 +18,14 @@ Gem::Specification.new do |s|
   s.required_ruby_version = '>= 1.9.0'
 
   s.files = Dir["lib/**/*"] + ["MIT-LICENSE", "Rakefile", "README.markdown"]
-  s.test_files = Dir["test/**/*"]
+  s.test_files = Dir["spec/**/*"]
+  s.require_paths = ["lib"]
 
   s.add_dependency "multi_json", "~> 1.3.6"
 
   s.add_development_dependency "webmock"
   s.add_development_dependency "vcr"
   s.add_development_dependency "rspec"
+  s.add_development_dependency "rake"
+
 end

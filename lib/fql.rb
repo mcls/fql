@@ -1,4 +1,5 @@
 require "net/http"
+require "openssl"
 require "fql/query"
 require "fql/exception"
 require "multi_json"
