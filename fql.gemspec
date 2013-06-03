@@ -21,7 +21,7 @@ Gem::Specification.new do |s|
   s.test_files = Dir["spec/**/*"]
   s.require_paths = ["lib"]
 
-  s.add_dependency "multi_json", "~> 1.3.6"
+  s.add_dependency "multi_json"
 
   s.add_development_dependency "webmock"
   s.add_development_dependency "vcr"
