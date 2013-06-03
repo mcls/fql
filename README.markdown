@@ -1,6 +1,6 @@
 # Fql
 
-[![Code Climate](https://codeclimate.com/github/mcls/fql.png)](https://codeclimate.com/github/mcls/fql)
+[![Build Status](https://travis-ci.org/mcls/fql.png?branch=master)](https://travis-ci.org/mcls/fql) [![Code Climate](https://codeclimate.com/github/mcls/fql.png)](https://codeclimate.com/github/mcls/fql)
 
 Easily execute FQL queries with this gem.
 
