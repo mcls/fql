@@ -34,7 +34,7 @@ describe Fql do
         query = { "likes1" => "SELECT user_id FROM like WHERE post_id = '204418407569_10151239646912570'",
                   "likes2" => "SELECT user_id FROM like WHERE post_id = '204418407569_10151239646912570'" }
         VCR.use_cassette('single_quoted_query') do
-          expect{ subject.execute query }.to_not raise_error(Fql::Exception)
+          expect{ subject.execute query }.to_not raise_error
         end
       end
     end
