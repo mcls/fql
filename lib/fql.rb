@@ -17,7 +17,7 @@ module Fql
     #
     # Exampe: a multi query with an access_token
     #
-    #   options = { :access_token => "fb_access_token" }
+    #   options = { :access_token => "fb_access_token", :appsecret_proof => "appsecret_proof" }
     #   Fql.execute({
     #     "query1" => "SELECT uid, rsvp_status FROM event_member WHERE eid = 12345678",
     #     "query2" => "SELECT name FROM profile WHERE id IN (SELECT uid FROM #query1)"
@@ -37,6 +37,8 @@ module Fql
     def make_url(fql_query, options = {})
       url = self::BASE_URL + URI.encode(fql_query.compose)
       url += URI.encode("&access_token=#{options[:access_token]}") if options && options[:access_token]
+      url += URI.encode("&appsecret_proof=#{options[:appsecret_proof]}") if options && options[:appsecret_proof]
+
       URI.parse url
     end
 
